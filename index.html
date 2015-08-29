@@ -6,22 +6,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Modeling the plausibility of basic income</title>
 
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet" integrity="sha256-MfvZlkHCEqatNoGiOXveE8FIwMzZg4W85qfrfIFBfYc= sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous"><!-- Bootstrap -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet" integrity="sha256-MfvZlkHCEqatNoGiOXveE8FIwMzZg4W85qfrfIFBfYc= sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
     <link href="css/bootstrap.min.css" rel="stylesheet">
 
     <style>
+      .bar rect {
+        fill: steelblue;
+        shape-rendering: crispEdges;
+      }
 
-    .bar rect {
-      fill: steelblue;
-      shape-rendering: crispEdges;
-    }
-
-    .axis path, .axis line {
-      fill: none;
-      stroke: #000;
-      shape-rendering: crispEdges;
-    }
-
+      .axis path, .axis line {
+        fill: none;
+        stroke: #000;
+        shape-rendering: crispEdges;
+      }
     </style>
   </head>
   <body>
@@ -42,79 +40,43 @@
 
       <h3>Basic income</h3>
 
-      <p>I am going to work through a basic income model written in JavaScript, explaining all of the parameters and components as I go. Let's start with some constants:</p>
+      <p>I am going to work through a basic income model, explaining all of the parameters and components as I go. In the 2010 census, there were 227 million adults. Of those, 154 million were in the labor force and 21 million were disabled. Our goal is to make sure everyone gets at least the minimum wage ($7.25/hr for 40 hours/week and 50 weeks/year, or $14,500/year) even without working.</p>
 
-      <pre>var numAdults = 227e6; // From 2010 census
-var basicIncome = 7.25 * 40 * 50; // Minimum wage, 40 hours/week, 50 weeks/year
-var laborForce = 154e6; // Also from 2010
-var disabledAdults = 21e6; // Also from 2010
-var currentWealthTransfers = 3369e9; // Also from 2010, includes SS, Medicare, etc.</pre>
+      <p>As mentioned above, part of the reason to implement basic income is to eliminate inefficient government welfare programs. Let's start with a very optimistic estimate of how much this could save - say, <a href="http://www.usgovernmentspending.com/piechart_2010_US_total">2010 US government spending</a> minus spending for education, defense, protection, transportation, and interest. That's $3.4 trillion.</p>
 
-      <p>The main thing to take from that are that we're going to make sure everyone has at least the income of a full time minimum wage job, and we're going to replace all other wealth transfers with basic income. Don't like that? Think the basic income should be higher? Think we should keep food stamps? Fantastic! Because <a href="LINK TO CODE">you can take a copy of my code</a>, edit it as much as you want, and re-run it. Maybe your higher basic income will be too expensive. Maybe getting rid of food stamps doesn't really change the overall conclusion. There's only one way to know.</p>
+      <p>I can hear you already! Maybe you don't want to cut all the programs I just proposed to cut. Maybe you want to cut some things that I didn't cut, such as defense spending. Here's the beauty of this model: <a href="https://github.com/dumbmatter/basic-income-basic-job">it's simple and it's open source</a>. With a little bit of programming knowledge, you can change these assumptions and see how it adds up. For example, you could keep Medicaid by cutting defense spending by 50%. The important thing is to do the math.</p>
 
-      <p>Now, we're going to enumerate all the costs and benefits associated with a basic income. Because there is uncertainty in calculating each of these factors, I'm going to pick a relatively wide range of random values and repeat my calculations many times. This is called the <a href="https://en.wikipedia.org/wiki/Monte_Carlo_method">Monte Carlo method</a> and it's a good way to understand uncertainty in an estimate involving randomness.</p>
+      <p>Now, we're going to enumerate all the costs and benefits associated with a basic income. Because there is uncertainty in calculating each of these factors, I will often going pick a relatively wide range of random values to represent a variety of possible outcomes and repeat my calculations many times. This is called the <a href="https://en.wikipedia.org/wiki/Monte_Carlo_method">Monte Carlo method</a> and it's a good way to understand uncertainty in an estimate involving randomness.</p>
 
-      <p>First, how much does it cost to send that much money to so many people? Well, I'm going to cut some money right off the top. Although the simplest basic income system pays the same amount to everyone, is also possible to have a system like progressive income tax, where it gradually phases out. In fact, my fellow Rutgers alumnus Milton Friedman proposed to implement basic income through a negative income tax. So let’s imagine some system like that and reduce the costs by 50% right off the bat.</p>
+      <p>First, <b>how much does it cost to send that much money to so many people?</b> Well, I'm going to cut some money right off the top. Although the simplest basic income system pays the same amount to everyone, is also possible to have a system like progressive income tax, where it gradually phases out. In fact, my fellow Rutgers alumnus Milton Friedman proposed to implement basic income through a negative income tax, which would naturally phase out as income increases. Let's assume that reduces costs to roughly <code>1/2 * numberOfAdults * basicIncome</code> or $1.65 trillion. That's a lot of money, but we'll see how it all adds up at the end.</p>
 
-      <pre>amounts.directCosts = numAdults * basicIncome / 2;</pre>
+      <p>There is also some <b>administrative overhead</b>, but due to the simplicity of determining eligibility and payouts, this will be small, let's say maybe $250 per adult.</p>
 
-      <p>There is also be some administrative overhead, but due to the simplicity of determining eligibility and payouts, this will be small.</p>
+      <p>Then, <b>what happens to the labor force?</b> Would people who were previously unable to work due to ill-concieved government regulation like <a href="https://www.illinoispolicy.org/reports/modeling-potential-income-and-welfare-assistance-benefits-in-illinois/">welfare cliffs</a> start working? <a href="http://apps.npr.org/unfit-for-work/">The number of Americans on disability has been rising too, at least partially due to people who want to work but make more money on disability.</a> Some of them would start working again if they recieved an unconditional basic income. Alternatively, some workers may decide that their basic income revenue is enough for them and quit their jobs.</p>
 
-      <pre>var administrativeCostPerPerson = gaussRand(250, 75);
-amounts.administrativeCosts = numAdults * administrativeCostPerPerson;</pre>
+      <p>I'm not really sure what the net effect would be, so let's include some uncertainty here. In some simulations, basic income will increase the labor force. In others, it will decrease. Again... want to fiddle with my numbers? <a href="https://github.com/dumbmatter/basic-income-basic-job">Try your own!</a></p>
 
-      <p>Then, what happens to the labor force? Will people who were previously unable to work due to ill-concieved government regulation like <a href="https://www.illinoispolicy.org/reports/modeling-potential-income-and-welfare-assistance-benefits-in-illinois/">welfare cliffs</a> start working? <a href="http://apps.npr.org/unfit-for-work/">The number of Americans on disability has been rising too, at least partially due to people who want to work but make more money when on disability.</a> Some of them would start working again if they recieved a basic income. Alternatively, workers may decide that their basic income revenue is enough for them and quit their jobs.</p>
+      <p>With a basic income, <b>many people would be free to pursue new career paths</b> or start small businesses (or bring existing careers and businesses out from under the table). Additionally, there could be an economic stimulus due to more poor people having money to spend, similar to <a href="http://money.cnn.com/2008/01/29/news/economy/stimulus_analysis/">what has been observed for food stamps</a>.</p>
 
-      <p>I'm not really sure what the net effect would be. So let's include some uncertainty here. In some simulations, basic income will increase the labor force. In others, it will decrease. Again... disagree with my numbers? <a href="LINK TO CODE">Try your own!</a></p>
+      <p>How big is this effect? That's really difficult to estimate, so again let's let this component vary randomly between positive and negative.</p>
 
-      <pre>var nonWorkerMultiplier = uniformRand(-0.10, 0.15);
-var nonWorkers = (numAdults - laborForce - disabledAdults) * (1 + nonWorkerMultiplier);</pre>
-
-      <p>With a basic income, many people would be free to pursue new career paths and start small businesses (or even bring existing careers and businesses out from under the table, as people on welfare often cannot work without facing penalties). Additionally, there could be an economic stimulus due to more poor people having money to spend, similar to <a href="http://money.cnn.com/2008/01/29/news/economy/stimulus_analysis/">what has been observed for food stamps</a>.</p>
-
-      <p>How big is this effect? That's really difficult to estimate, so again let's let this one vary randomly between positive and negative.</p>
-
-      <pre>var avgHourlyWage = 25;
-var productivityMultiplier = uniformRand(-0.1, 0.2);
-amounts.productivity = -laborForce * (40 * 50 * avgHourlyWage) * productivityMultiplier;</pre>
-
-      <p>Just for fun, let's add the JK Rowling effect. JK Rowling is of course the author of the Harry Potter novels. She famously wrote the first novel while on welfare. Basic income could possibly allow even more people to have this luxury.</p>
-
-      <pre>amounts.jkRowling = -binomRand(nonWorkers, 1e-7) * 1e9;</pre>
+      <p>And just for fun, let's add the <b>JK Rowling effect</b>. JK Rowling is of course the author of the Harry Potter novels. She famously wrote the first novel while on welfare. Basic income could possibly allow even more people to have this luxury.</p>
 
       <h3>Basic job</h3>
 
       <p>A reasonable comparison for a basic income is, what if the government just gave every unemployed person an minimum wage job? That would also have a high cost, but some benefits too, right? That's what was proposed in <a href="https://www.chrisstucchio.com/blog/2013/basic_income_vs_basic_job.html">the article that inspired this one</a>, but let's see how likely that is.</p>
 
-      <p>Again, there is some uncertainty about the effects on the labor force. Maybe some people will desperately take other jobs to avoid a basic job. Maybe others will see the basic job as favorable to their current job. Let's treat this the same as before.
+      <p>Again, there is some uncertainty about the <b>effects on the labor force</b>. Maybe some people will desperately take other jobs to avoid a basic job. Maybe others will see the basic job as favorable to their current job. Let's treat this the same as in the basic income scenario, allowing it to vary between positive and negative.</p>
 
-      <pre>var nonWorkerMultiplier = uniformRand(-0.1, 0.15);
-var numBasicWorkers = (numAdults - disabledAdults - laborForce) * (1 + nonWorkerMultiplier);</pre>
+      <p>There is a large overall cost, of course. You have to <b>pay all non-disabled non-working adults</b> $14.5k/year to work a basic job, which comes out to $0.77 trillion total. That is less than half of the direct cost of basic income! But let's see how it all adds up at the end. For instance, there will also be <b>disabled adults</b> who can't work but still need to be paid, which brings the direct cost up to around $1 trillion.</p>
 
-      <p>There is the overall cost, of course.</p>
+      <p>There will also be some <b>administrative overhead</b> involved in this program, much more than would be required for basic income. Let's say about $5k per basic worker, with a good amount of randomness included to account for uncertainty.</p>
 
-      <pre>amounts.directCosts = numBasicWorkers * basicIncome;</pre>
-
-      <p>There will also be disabled people who can't work but still need to be paid.</p>
-
-      <pre>var administrativeCostPerDisabledPerson = gaussRand(500, 150);
-amounts.disabled = disabledAdults * (basicIncome + administrativeCostPerDisabledPerson);</pre>
-
-      <p>There will also be some administrative overhead involved in this program, much more than would be required for basic income.</p>
-
-      <pre>var administrativeCostPerWorker = gaussRand(5000, 1500);
-amounts.directCosts = numBasicWorkers * administrativeCostPerWorker;</pre>
-
-      <p>Then we get to the real crux of the issue: what productive work would actually be accomplished by a basic job program? Can we expect the federal government to profitably run an absolutely massive centrally-planned jobs program involving primarily those workers who can't find work in the private sector? I doubt it, but it's possible. So let's let this factor vary between positive and negative.</p>
-
-      <pre>var basicJobHourlyProductivity = uniformRand(-7.25, 7.25);
-amounts.productivity = -numBasicWorkers * (40 * 50 * basicJobHourlyProductivity);</pre>
+      <p>Then we get to the real crux of the issue: <b>what productive work would actually be accomplished by a basic job program?</b> Can we expect the federal government to profitably run an absolutely massive centrally-planned jobs program involving primarily those workers who can't find work in the private sector? I doubt it, but it's possible. So let's let this factor vary between positive and negative.</p>
 
       <h2>Results</h2>
 
-      <p>One more time, <a href="LINK TO CODE">here is a link to the code</a> so you can easily generate your own model based on your own assumptions.</p>
-
-      <a href="javascript:run()">You can also click here to regenerate the plots below with new simulations.</a>
+      <p>One more time, <a href="https://github.com/dumbmatter/basic-income-basic-job">here is a link to the code</a> so you can easily generate your own model based on your own assumptions.</p>
 
       <h3>Histograms of total costs, 1000 simulations</h3>
 
@@ -127,13 +89,15 @@ amounts.productivity = -numBasicWorkers * (40 * 50 * basicJobHourlyProductivity)
           <h4>Basic job</h4>
           <div id="bjHist"></div>
         </div>
-      </div><p></p>
+      </div>
 
-      <p>In both examples, there is clearly a lot of variability in how much the programs cost. But by doing a Monte Carlo simulation, a reasonable range of outcomes can be seen. From this, it is apparent that our model of basic income is actually not more costly than our model of basic job, although there is enough overlap to call them roughly equivalent.</p>
+      <p><a href="javascript:run()">Click to re-run Monte Carlo simulations</a></p>
 
-      <p>If better estimates and more thorough modeling can reach a solution that lies closer to 0 than to $2 trillion, that would be good. But regardless, given a US budget that is already denominated in trillions of dollars, this model shows that basic income need not be prohibitively expensive.</p>
+      <p>In both examples, there is clearly a lot of variability in how much the programs cost. But by doing a Monte Carlo simulation, the range of outcomes can be seen. From these results, it is apparent that our model of basic income is actually not more costly than our model of basic job, although there is enough overlap to call them roughly equivalent.</p>
 
-      <h3>Agerave importance of components</h3>
+      <p>If better estimates and more thorough modeling can produce a narrower distribution that lies closer to $0 than to $2 trillion, that would be good. But regardless, given a US budget that is already denominated in trillions of dollars, this model shows that basic income need not be prohibitively expensive.</p>
+
+      <h3>Average values of components, 1000 simulations</h3>
 
       <div class="row">
         <div class="col-sm-6 col-md-5 col-lg-4">
@@ -146,11 +110,13 @@ amounts.productivity = -numBasicWorkers * (40 * 50 * basicJobHourlyProductivity)
         </div>
       </div><p></p>
 
+      <p><a href="javascript:run()">Click to re-run Monte Carlo simulations</a></p>
+
       <p>The red bars show costs, the black bars show reductions in costs.</p>
 
       <p>Although basic income has much higher direct costs due to its broader population of recipients, this is mostly accounted for by increased productivity and decreased administrative costs.</p>
 
-      <p>Additionally, through this type of analysis you can see that it is unlikely that releasing the creative geniuses stuck in crappy jobs will result in significant economic gains, although we might get a few more Harry Potters out of it.</p>
+      <p>Additionally, through this analysis you can see that it is unlikely that unleashing the creative geniuses stuck in crappy jobs will result in significant economic gains, although we might get a few more Harry Potters out of it.</p>
 
       <h2>Conclusions</h2>
 
@@ -158,7 +124,7 @@ amounts.productivity = -numBasicWorkers * (40 * 50 * basicJobHourlyProductivity)
 
       <p>Basic income would not necessarily be prohibitively expensive, although of course the devil is in the details.</p>
 
-      <p>And mathematical modeling is a useful tool for quantitatively explaining your reasoning. I know my reasoning here is very simple and likely very wrong at times. My only request is that criticism comes with a model.</p>
+      <p>And mathematical modeling is a useful tool for quantitatively explaining your reasoning. I know my reasoning here is very simple and likely very wrong at times, but at least it's explicit. My only request is that criticism comes with a model.</p>
     </div>
 
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
