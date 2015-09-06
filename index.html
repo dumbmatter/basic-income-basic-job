@@ -20,6 +20,17 @@
         stroke: #000;
         shape-rendering: crispEdges;
       }
+
+      #tooltip {
+        background-color: #000;
+        color: #fff;
+        position: absolute;
+        border-radius: 8px;
+        pointer-events: none;
+        padding: 5px;
+        z-index: 10;
+        opacity: 0;
+      }
     </style>
   </head>
   <body>
@@ -99,6 +110,7 @@
 
       <h3>Average values of components, 1000 simulations</h3>
 
+      <div id="tooltip"></div>
       <div class="row">
         <div class="col-sm-6 col-md-5 col-lg-4">
           <h4>Basic income</h4>

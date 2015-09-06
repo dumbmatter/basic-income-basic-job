@@ -1,5 +1,3 @@
-'use strict';
-
 ////
 // Models
 ////
@@ -125,7 +123,7 @@ function histogram(containerId, values) {
     container.innerHTML = '';
 
     // A formatter for counts.
-    var formatCount = d3.format(",.0f");
+    var formatCount = d3.format(',.0f');
 
     var margin = {top: 10, right: 30, bottom: 45, left: 30},
         width = container.offsetWidth - margin.left - margin.right,
@@ -141,39 +139,39 @@ function histogram(containerId, values) {
         (values);
 
     var y = d3.scale.linear()
-        .domain([0, d3.max(data, function(d) { return d.y; })])
+        .domain([0, d3.max(data, function (d) { return d.y; })])
         .range([height, 0]);
 
     var xAxis = d3.svg.axis()
         .scale(x)
-        .orient("bottom");
+        .orient('bottom');
 
-    var svg = d3.select("#" + containerId).append("svg")
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
-      .append("g")
-        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    var svg = d3.select('#' + containerId).append('svg')
+        .attr('width', width + margin.left + margin.right)
+        .attr('height', height + margin.top + margin.bottom)
+      .append('g')
+        .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
-    var bar = svg.selectAll(".bar")
+    var bar = svg.selectAll('.bar')
         .data(data)
-      .enter().append("g")
-        .attr("class", "bar")
-        .attr("transform", function(d) { return "translate(" + x(d.x) + "," + y(d.y) + ")"; });
+      .enter().append('g')
+        .attr('class', 'bar')
+        .attr('transform', function (d) { return 'translate(' + x(d.x) + ',' + y(d.y) + ')'; });
 
-    bar.append("rect")
-        .attr("x", 1)
-        .attr("width", x(data[0].dx) - 1)
-        .attr("height", function(d) { return height - y(d.y); });
+    bar.append('rect')
+        .attr('x', 1)
+        .attr('width', x(data[0].dx) - 1)
+        .attr('height', function (d) { return height - y(d.y); });
 
-    svg.append("g")
-        .attr("class", "x axis")
-        .attr("transform", "translate(0," + height + ")")
+    svg.append('g')
+        .attr('class', 'x axis')
+        .attr('transform', 'translate(0,' + height + ')')
         .call(xAxis);
 
-    svg.append("text")
-        .attr("transform", "translate(" + (width / 2) + " ," + (height + margin.bottom - 5) + ")")
-        .style("text-anchor", "middle")
-        .text("Cost (trillions of dollars)");
+    svg.append('text')
+        .attr('transform', 'translate(' + (width / 2) + ' ,' + (height + margin.bottom - 5) + ')')
+        .style('text-anchor', 'middle')
+        .text('Cost (trillions of dollars)');
 }
 
 function bars(table, amounts, amounts2) {
@@ -199,43 +197,56 @@ function bars(table, amounts, amounts2) {
         zero = -minValue * 100 / (maxValue - minValue);
     }
 
-    var offsets = [];
-    var widths = [];
-    var signs = [];
-
-    values.forEach(function (value) {
+    var data = [];
+    values.forEach(function (value, i) {
         var scaled = value * 100 / (maxValue - minValue);
         var width = Math.abs(scaled);
         var sign = Math.sign(scaled);
 
-        offsets.push(sign === 1 ? zero : zero + scaled);
-        widths.push(width);
-        signs.push(sign);
+        data.push({
+            value: value,
+            offset: sign === 1 ? zero : zero + scaled,
+            width: width,
+            sign: sign,
+            category: categories[i]
+        });
     });
 
-    table.innerHTML = '';
+    d3.select('#' + table.id)
+        .selectAll('tr')
+        .remove();
 
-    var bar, cellName, cellBar, row;
-    for (var i = 0; i < values.length; i++) {
-        row = table.insertRow();
-        cellName = row.insertCell();
-        cellName.appendChild(document.createTextNode(categories[i]));
+    var div = d3.select('#tooltip')
+        .style('opacity', 0);
 
-        bar = document.createElement('div');
-        bar.style.height = '1em';
-        bar.style.width = widths[i] + 'px';
-        bar.style.marginLeft = offsets[i] + 'px';
-        bar.style.backgroundColor = signs[i] === 1 ? 'red' : 'black';
+    var rows = d3.select('#' + table.id)
+        .selectAll('table')
+        .data(data)
+        .enter().append('tr');
 
-        if (signs[i] === 1) {
-            bar.title = 'Costs $' + (values[i] / 1e12).toFixed(2) + ' trillion';
-        } else {
-            bar.title = 'Reduces costs $' + (-values[i] / 1e12).toFixed(2) + ' trillion';
-        }
+    rows.append('td')
+        .html(function (d) { return d.category; });
 
-        cellBar = row.insertCell();
-        cellBar.appendChild(bar);
-    }
+    rows.append('td')
+        .on('mouseover', function (d) {
+            div.style('opacity', 0.9);
+            div.html(function () {
+                    if (d.sign === 1) {
+                        return 'Costs $' + (d.value / 1e12).toFixed(2) + ' trillion';
+                    }
+                    return 'Reduces costs $' + (-d.value / 1e12).toFixed(2) + ' trillion';
+                })
+               .style('left', (d3.event.pageX + 15) + 'px')
+               .style('top', (d3.event.pageY) + 'px');
+        })
+        .on('mouseout', function (d) {
+            div.style('opacity', 0);
+        })
+        .append('div')
+        .style('width', function (d) { return d.width + 'px'; })
+        .style('height', '1em')
+        .style('margin-left', function (d) { return d.offset + 'px'; })
+        .style('background-color', function (d) { return d.sign === 1 ? 'red' : 'black'; });
 }
 
 ////
