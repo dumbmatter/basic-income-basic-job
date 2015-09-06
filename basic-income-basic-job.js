@@ -81,15 +81,23 @@ function basicJobCostBenefit() {
 // ## Run models and aggregate results
 // ----------------------------------
 
+// Arrays containing objects, each one the output of `basicIncomeCostBenefit` or `basicJobCostBenefit` which is an object containing all the cost/benefit components
 var biAmounts = [];
-var biTotals = [];
 var bjAmounts = [];
+
+// Arrays containing the total cost/benefit from each run, which is just one number per run
+var biTotals = [];
 var bjTotals = [];
+
+// Objects containing the average cost/benefit component values across all runs
 var biAmountsAvg;
 var bjAmountsAvg;
 
 function run() {
+    // Number of simulations to run at once
     var N = 1000;
+
+    // Run the modesl N times and save the results
     for (var i = 0; i < N; i++) {
         biAmounts[i] = basicIncomeCostBenefit();
         biTotals[i] = Object.keys(biAmounts[i]).reduce(function (total, key) {
@@ -102,6 +110,7 @@ function run() {
         }, 0);
     }
 
+    // Precompute the average values from all N simulations
     function amountsAvgReducer(avg, amounts) {
         Object.keys(amounts).forEach(function (key) {
             if (avg.hasOwnProperty(key)) {
@@ -113,13 +122,20 @@ function run() {
 
         return avg;
     }
-
     biAmountsAvg = biAmounts.reduce(amountsAvgReducer, {});
     bjAmountsAvg = bjAmounts.reduce(amountsAvgReducer, {});
 
+    // This will generate and display charts based on the generated results - see the next section for details
     render();
 }
 
+// Run the simulations on page load
+run();
+
+// ## Display results
+// -----------------
+
+// Generate and display all charts
 function render() {
     bars('biBars', biAmountsAvg, bjAmountsAvg);
     bars('bjBars', bjAmountsAvg, biAmountsAvg);
@@ -128,13 +144,8 @@ function render() {
     histogram('bjHist', bjTotals);
 }
 
-run();
-
 // The histograms need to be re-rendered when the size of the window changes, otherwise they won't fit in the window correctly
 window.addEventListener('resize', render);
-
-// ## Display results
-// -----------------
 
 // Plot one of the histograms, showing the distribution of possible costs
 function histogram(containerId, values) {
