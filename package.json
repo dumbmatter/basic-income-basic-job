@@ -1,0 +1,27 @@
+{
+  "name": "basic-income-basic-job",
+  "version": "1.0.0",
+  "description": "To run the model, load `index.html` in your browser.",
+  "main": "basic-income-basic-job.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "dependencies": {
+    "docco": "^0.7.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "docco": "docco basic-income-basic-job.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dumbmatter/basic-income-basic-job.git"
+  },
+  "author": "",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/dumbmatter/basic-income-basic-job/issues"
+  },
+  "homepage": "https://github.com/dumbmatter/basic-income-basic-job#readme"
+}

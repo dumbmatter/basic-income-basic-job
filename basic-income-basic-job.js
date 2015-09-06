@@ -1,17 +1,33 @@
-////
-// Models
-////
+// # Basic income and basic job models
+// -----------------------------------
 
-var numAdults = 227e6; // From 2010 census
-var basicIncome = 7.25 * 40 * 50; // Minimum wage, 40 hours/week, 50 weeks/year
-var laborForce = 154e6; // Also from 2010
-var disabledAdults = 21e6; // Also from 2010
-var currentWealthTransfers = 3369e9; // Also from 2010, includes SS, Medicare, welfare, etc.
+// ## Constants
+// ------------
 
+// From 2010 census
+var numAdults = 227e6;
+
+// Minimum wage, 40 hours/week, 50 weeks/year
+var basicIncome = 7.25 * 40 * 50;
+
+// Also from 2010
+var laborForce = 154e6;
+
+// Also from 2010
+var disabledAdults = 21e6;
+
+// Also from 2010, includes SS, Medicare, welfare, etc.
+var currentWealthTransfers = 3369e9;
+
+// ## Basic income model
+// ---------------------
+
+// Each time this function is called, the model will be run once. Because there is randomness in the model, the output will vary. Later, this function will be run many times to assess the full range of possible outcomes.
 function basicIncomeCostBenefit() {
+    // This object will store all the costs and benefits of the basic income as key/value pairs.
     var amounts = {};
 
-    // Assume we have some kind of phase out, like a negative income tax
+    // Assume we have some kind of phase out, like with a negative income tax
     amounts.directCosts = numAdults * basicIncome / 2;
 
     // Small administrative cost
@@ -33,6 +49,10 @@ function basicIncomeCostBenefit() {
     return amounts;
 }
 
+// ## Basic job model
+// ------------------
+
+// Like the basic income model, this function will run the model once each time it is called. The output of this function is the same format as `basicIncomeCostBenefit`, so the results can be easily compared.
 function basicJobCostBenefit() {
     var amounts = {};
 
@@ -58,9 +78,8 @@ function basicJobCostBenefit() {
     return amounts;
 }
 
-////
-// Run and aggregate results
-////
+// ## Run models and aggregate results
+// ----------------------------------
 
 var biAmounts = [];
 var biTotals = [];
@@ -113,10 +132,8 @@ run();
 
 window.addEventListener('resize', render);
 
-
-////
-// UI
-////
+// ## Display results
+// -----------------
 
 function histogram(containerId, values) {
     var container = document.getElementById(containerId);
@@ -249,9 +266,10 @@ function bars(table, amounts, amounts2) {
         .style('background-color', function (d) { return d.sign === 1 ? 'red' : 'black'; });
 }
 
-////
-// Utility
-////
+// ## Utility functions
+// --------------------
+
+// Because JavaScript's ecosystem is a wasteland, I wrote some helper functions for generating the random numbers used in the models
 
 function uniformRand(min, max) {
     return Math.random() * (max - min) + min;
