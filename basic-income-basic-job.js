@@ -30,7 +30,7 @@ function basicIncomeCostBenefit() {
     // Assume we have some kind of phase out, like with a negative income tax
     amounts.directCosts = numAdults * basicIncome / 2;
 
-    // Small administrative cost
+    // Small random administrative cost
     var administrativeCostPerPerson = gaussRand(250, 75);
     amounts.administrativeCosts = numAdults * administrativeCostPerPerson;
 
@@ -60,7 +60,7 @@ function basicJobCostBenefit() {
     var nonWorkerMultiplier = uniformRand(-0.1, 0.15);
     var numBasicWorkers = (numAdults - disabledAdults - laborForce) * (1 + nonWorkerMultiplier);
 
-    // Overall cost
+    // Overall direct costs
     amounts.directCosts = numBasicWorkers * basicIncome;
 
     // Some cost for disabled people who can't work
@@ -121,8 +121,8 @@ function run() {
 }
 
 function render() {
-    bars(document.getElementById('biBars'), biAmountsAvg, bjAmountsAvg);
-    bars(document.getElementById('bjBars'), bjAmountsAvg, biAmountsAvg);
+    bars('biBars', biAmountsAvg, bjAmountsAvg);
+    bars('bjBars', bjAmountsAvg, biAmountsAvg);
 
     histogram('biHist', biTotals);
     histogram('bjHist', bjTotals);
@@ -130,17 +130,16 @@ function render() {
 
 run();
 
+// The histograms need to be re-rendered when the size of the window changes, otherwise they won't fit in the window correctly
 window.addEventListener('resize', render);
 
 // ## Display results
 // -----------------
 
+// Plot one of the histograms, showing the distribution of possible costs
 function histogram(containerId, values) {
     var container = document.getElementById(containerId);
     container.innerHTML = '';
-
-    // A formatter for counts.
-    var formatCount = d3.format(',.0f');
 
     var margin = {top: 10, right: 30, bottom: 45, left: 30},
         width = container.offsetWidth - margin.left - margin.right,
@@ -150,10 +149,9 @@ function histogram(containerId, values) {
         .domain([0, 4])
         .range([0, width]);
 
-    // Generate a histogram using twenty uniformly-spaced bins.
+    // Generate a histogram with 10 evenly-spaced bins from input values
     var data = d3.layout.histogram()
-        .bins(x.ticks(10))
-        (values);
+        .bins(x.ticks(10))(values);
 
     var y = d3.scale.linear()
         .domain([0, d3.max(data, function (d) { return d.y; })])
@@ -166,12 +164,12 @@ function histogram(containerId, values) {
     var svg = d3.select('#' + containerId).append('svg')
         .attr('width', width + margin.left + margin.right)
         .attr('height', height + margin.top + margin.bottom)
-      .append('g')
+        .append('g')
         .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
     var bar = svg.selectAll('.bar')
         .data(data)
-      .enter().append('g')
+        .enter().append('g')
         .attr('class', 'bar')
         .attr('transform', function (d) { return 'translate(' + x(d.x) + ',' + y(d.y) + ')'; });
 
@@ -191,7 +189,11 @@ function histogram(containerId, values) {
         .text('Cost (trillions of dollars)');
 }
 
-function bars(table, amounts, amounts2) {
+// Plot one of the bar graphs, showing the average contribution of different components to the total cost
+function bars(containerId, amounts, amounts2) {
+    var container = document.getElementById(containerId);
+    container.innerHTML = '';
+
     var width = 100;
 
     var categories = Object.keys(amounts).sort();
@@ -229,14 +231,10 @@ function bars(table, amounts, amounts2) {
         });
     });
 
-    d3.select('#' + table.id)
-        .selectAll('tr')
-        .remove();
-
     var div = d3.select('#tooltip')
         .style('opacity', 0);
 
-    var rows = d3.select('#' + table.id)
+    var rows = d3.select('#' + containerId)
         .selectAll('table')
         .data(data)
         .enter().append('tr');

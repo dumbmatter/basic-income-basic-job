@@ -219,7 +219,7 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-15">&#182;</a>
               </div>
-              <p>Small administrative cost</p>
+              <p>Small random administrative cost</p>
 
             </div>
             
@@ -344,7 +344,7 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-23">&#182;</a>
               </div>
-              <p>Overall cost</p>
+              <p>Overall direct costs</p>
 
             </div>
             
@@ -468,16 +468,14 @@
 }
 
 <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">render</span>(<span class="hljs-params"></span>) </span>{
-    bars(<span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'biBars'</span>), biAmountsAvg, bjAmountsAvg);
-    bars(<span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'bjBars'</span>), bjAmountsAvg, biAmountsAvg);
+    bars(<span class="hljs-string">'biBars'</span>, biAmountsAvg, bjAmountsAvg);
+    bars(<span class="hljs-string">'bjBars'</span>, bjAmountsAvg, biAmountsAvg);
 
     histogram(<span class="hljs-string">'biHist'</span>, biTotals);
     histogram(<span class="hljs-string">'bjHist'</span>, bjTotals);
 }
 
-run();
-
-<span class="hljs-built_in">window</span>.addEventListener(<span class="hljs-string">'resize'</span>, render);</pre></div></div>
+run();</pre></div></div>
             
         </li>
         
@@ -488,10 +486,11 @@ run();
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-29">&#182;</a>
               </div>
-              <h2 id="display-results">Display results</h2>
-<hr>
+              <p>The histograms need to be re-rendered when the size of the window changes, otherwise they won’t fit in the window correctly</p>
 
             </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-built_in">window</span>.addEventListener(<span class="hljs-string">'resize'</span>, render);</pre></div></div>
             
         </li>
         
@@ -502,13 +501,10 @@ run();
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-30">&#182;</a>
               </div>
-              
+              <h2 id="display-results">Display results</h2>
+<hr>
+
             </div>
-            
-            <div class="content"><div class='highlight'><pre>
-<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">histogram</span>(<span class="hljs-params">containerId, values</span>) </span>{
-    <span class="hljs-keyword">var</span> container = <span class="hljs-built_in">document</span>.getElementById(containerId);
-    container.innerHTML = <span class="hljs-string">''</span>;</pre></div></div>
             
         </li>
         
@@ -519,11 +515,25 @@ run();
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-31">&#182;</a>
               </div>
-              <p>A formatter for counts.</p>
+              
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-32">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-32">&#182;</a>
+              </div>
+              <p>Plot one of the histograms, showing the distribution of possible costs</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">var</span> formatCount = d3.format(<span class="hljs-string">',.0f'</span>);
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">histogram</span>(<span class="hljs-params">containerId, values</span>) </span>{
+    <span class="hljs-keyword">var</span> container = <span class="hljs-built_in">document</span>.getElementById(containerId);
+    container.innerHTML = <span class="hljs-string">''</span>;
 
     <span class="hljs-keyword">var</span> margin = {top: <span class="hljs-number">10</span>, right: <span class="hljs-number">30</span>, bottom: <span class="hljs-number">45</span>, left: <span class="hljs-number">30</span>},
         width = container.offsetWidth - margin.left - margin.right,
@@ -536,19 +546,18 @@ run();
         </li>
         
         
-        <li id="section-32">
+        <li id="section-33">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-32">&#182;</a>
+                <a class="pilcrow" href="#section-33">&#182;</a>
               </div>
-              <p>Generate a histogram using twenty uniformly-spaced bins.</p>
+              <p>Generate a histogram with 10 evenly-spaced bins from input values</p>
 
             </div>
             
             <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">var</span> data = d3.layout.histogram()
-        .bins(x.ticks(<span class="hljs-number">10</span>))
-        (values);
+        .bins(x.ticks(<span class="hljs-number">10</span>))(values);
 
     <span class="hljs-keyword">var</span> y = d3.scale.linear()
         .domain([<span class="hljs-number">0</span>, d3.max(data, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">d</span>) </span>{ <span class="hljs-keyword">return</span> d.y; })])
@@ -561,12 +570,12 @@ run();
     <span class="hljs-keyword">var</span> svg = d3.select(<span class="hljs-string">'#'</span> + containerId).append(<span class="hljs-string">'svg'</span>)
         .attr(<span class="hljs-string">'width'</span>, width + margin.left + margin.right)
         .attr(<span class="hljs-string">'height'</span>, height + margin.top + margin.bottom)
-      .append(<span class="hljs-string">'g'</span>)
+        .append(<span class="hljs-string">'g'</span>)
         .attr(<span class="hljs-string">'transform'</span>, <span class="hljs-string">'translate('</span> + margin.left + <span class="hljs-string">','</span> + margin.top + <span class="hljs-string">')'</span>);
 
     <span class="hljs-keyword">var</span> bar = svg.selectAll(<span class="hljs-string">'.bar'</span>)
         .data(data)
-      .enter().append(<span class="hljs-string">'g'</span>)
+        .enter().append(<span class="hljs-string">'g'</span>)
         .attr(<span class="hljs-string">'class'</span>, <span class="hljs-string">'bar'</span>)
         .attr(<span class="hljs-string">'transform'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">d</span>) </span>{ <span class="hljs-keyword">return</span> <span class="hljs-string">'translate('</span> + x(d.x) + <span class="hljs-string">','</span> + y(d.y) + <span class="hljs-string">')'</span>; });
 
@@ -584,9 +593,25 @@ run();
         .attr(<span class="hljs-string">'transform'</span>, <span class="hljs-string">'translate('</span> + (width / <span class="hljs-number">2</span>) + <span class="hljs-string">' ,'</span> + (height + margin.bottom - <span class="hljs-number">5</span>) + <span class="hljs-string">')'</span>)
         .style(<span class="hljs-string">'text-anchor'</span>, <span class="hljs-string">'middle'</span>)
         .text(<span class="hljs-string">'Cost (trillions of dollars)'</span>);
-}
+}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-34">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-34">&#182;</a>
+              </div>
+              <p>Plot one of the bar graphs, showing the average contribution of different components to the total cost</p>
 
-<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">bars</span>(<span class="hljs-params">table, amounts, amounts2</span>) </span>{
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">bars</span>(<span class="hljs-params">containerId, amounts, amounts2</span>) </span>{
+    <span class="hljs-keyword">var</span> container = <span class="hljs-built_in">document</span>.getElementById(containerId);
+    container.innerHTML = <span class="hljs-string">''</span>;
+
     <span class="hljs-keyword">var</span> width = <span class="hljs-number">100</span>;
 
     <span class="hljs-keyword">var</span> categories = <span class="hljs-built_in">Object</span>.keys(amounts).sort();
@@ -624,14 +649,10 @@ run();
         });
     });
 
-    d3.select(<span class="hljs-string">'#'</span> + table.id)
-        .selectAll(<span class="hljs-string">'tr'</span>)
-        .remove();
-
     <span class="hljs-keyword">var</span> div = d3.select(<span class="hljs-string">'#tooltip'</span>)
         .style(<span class="hljs-string">'opacity'</span>, <span class="hljs-number">0</span>);
 
-    <span class="hljs-keyword">var</span> rows = d3.select(<span class="hljs-string">'#'</span> + table.id)
+    <span class="hljs-keyword">var</span> rows = d3.select(<span class="hljs-string">'#'</span> + containerId)
         .selectAll(<span class="hljs-string">'table'</span>)
         .data(data)
         .enter().append(<span class="hljs-string">'tr'</span>);
@@ -664,11 +685,11 @@ run();
         </li>
         
         
-        <li id="section-33">
+        <li id="section-35">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-33">&#182;</a>
+                <a class="pilcrow" href="#section-35">&#182;</a>
               </div>
               <h2 id="utility-functions">Utility functions</h2>
 <hr>
@@ -678,11 +699,11 @@ run();
         </li>
         
         
-        <li id="section-34">
+        <li id="section-36">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-34">&#182;</a>
+                <a class="pilcrow" href="#section-36">&#182;</a>
               </div>
               
             </div>
@@ -690,11 +711,11 @@ run();
         </li>
         
         
-        <li id="section-35">
+        <li id="section-37">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-35">&#182;</a>
+                <a class="pilcrow" href="#section-37">&#182;</a>
               </div>
               <p>Because JavaScript’s ecosystem is a wasteland, I wrote some helper functions for generating the random numbers used in the models</p>
 
