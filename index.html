@@ -46,47 +46,13 @@
 
       <p>Basic income is a system where the government directly gives money to all its citizens, rather than somewhat indirectly through complicated welfare programs. The idea is that removing the overhead and inefficiencies inherent in welfare programs and putting more money in the pocket of the poor could be very beneficial. Beyond that, there are many questions. Should the amount of money phase out for wealthy citizens? Which entitlements and regulations should it replace? And most importantly, how much will it cost and what will the benefits be?</p>
 
+      <p>Here, a basic income model is compared against a "basic job" model where the government guarantees employment for all non-disabled adults.</p>
+
       <h2>Methods</h2>
 
-      <h3>Basic income</h3>
-
-      <p>I am going to work through a basic income model, explaining all of the parameters and components as I go. In the 2010 census, there were 227 million adults. Of those, 154 million were in the labor force and 21 million were disabled. Our goal is to make sure everyone gets at least the minimum wage ($7.25/hr for 40 hours/week and 50 weeks/year, or $14,500/year) even without working.</p>
-
-      <p>As mentioned above, part of the reason to implement basic income is to eliminate inefficient government welfare programs. Let's start with a very optimistic estimate of how much this could save - say, <a href="http://www.usgovernmentspending.com/piechart_2010_US_total">2010 US government spending</a> minus spending for education, defense, protection, transportation, and interest. That's $3.4 trillion.</p>
-
-      <p>I can hear you already! Maybe you don't want to cut all the programs I just proposed to cut. Maybe you want to cut some things that I didn't cut, such as defense spending. Here's the beauty of this model: <a href="https://github.com/dumbmatter/basic-income-basic-job">it's simple and it's open source</a>. With a little bit of programming knowledge, you can change these assumptions and see how it adds up. For example, you could keep Medicaid by cutting defense spending by 50%. The important thing is to do the math.</p>
-
-      <p>Now, we're going to enumerate all the costs and benefits associated with a basic income. Because there is uncertainty in calculating each of these factors, I will often going pick a relatively wide range of random values to represent a variety of possible outcomes and repeat my calculations many times. This is called the <a href="https://en.wikipedia.org/wiki/Monte_Carlo_method">Monte Carlo method</a> and it's a good way to understand uncertainty in an estimate involving randomness.</p>
-
-      <p>First, <b>how much does it cost to send that much money to so many people?</b> Well, I'm going to cut some money right off the top. Although the simplest basic income system pays the same amount to everyone, is also possible to have a system like progressive income tax, where it gradually phases out. In fact, my fellow Rutgers alumnus Milton Friedman proposed to implement basic income through a negative income tax, which would naturally phase out as income increases. Let's assume that reduces costs to roughly <code>1/2 * numberOfAdults * basicIncome</code> or $1.65 trillion. That's a lot of money, but we'll see how it all adds up at the end.</p>
-
-      <p>There is also some <b>administrative overhead</b>, but due to the simplicity of determining eligibility and payouts, this will be small, let's say maybe $250 per adult.</p>
-
-      <p>Then, <b>what happens to the labor force?</b> Would people who were previously unable to work due to ill-concieved government regulation like <a href="https://www.illinoispolicy.org/reports/modeling-potential-income-and-welfare-assistance-benefits-in-illinois/">welfare cliffs</a> start working? <a href="http://apps.npr.org/unfit-for-work/">The number of Americans on disability has been rising too, at least partially due to people who want to work but make more money on disability.</a> Some of them would start working again if they recieved an unconditional basic income. Alternatively, some workers may decide that their basic income revenue is enough for them and quit their jobs.</p>
-
-      <p>I'm not really sure what the net effect would be, so let's include some uncertainty here. In some simulations, basic income will increase the labor force. In others, it will decrease. Again... want to fiddle with my numbers? <a href="https://github.com/dumbmatter/basic-income-basic-job">Try your own!</a></p>
-
-      <p>With a basic income, <b>many people would be free to pursue new career paths</b> or start small businesses (or bring existing careers and businesses out from under the table). Additionally, there could be an economic stimulus due to more poor people having money to spend, similar to <a href="http://money.cnn.com/2008/01/29/news/economy/stimulus_analysis/">what has been observed for food stamps</a>.</p>
-
-      <p>How big is this effect? That's really difficult to estimate, so again let's let this component vary randomly between positive and negative.</p>
-
-      <p>And just for fun, let's add the <b>JK Rowling effect</b>. JK Rowling is of course the author of the Harry Potter novels. She famously wrote the first novel while on welfare. Basic income could possibly allow even more people to have this luxury.</p>
-
-      <h3>Basic job</h3>
-
-      <p>A reasonable comparison for a basic income is, what if the government just gave every unemployed person an minimum wage job? That would also have a high cost, but some benefits too, right? That's what was proposed in <a href="https://www.chrisstucchio.com/blog/2013/basic_income_vs_basic_job.html">the article that inspired this one</a>, but let's see how likely that is.</p>
-
-      <p>Again, there is some uncertainty about the <b>effects on the labor force</b>. Maybe some people will desperately take other jobs to avoid a basic job. Maybe others will see the basic job as favorable to their current job. Let's treat this the same as in the basic income scenario, allowing it to vary between positive and negative.</p>
-
-      <p>There is a large overall cost, of course. You have to <b>pay all non-disabled non-working adults</b> $14.5k/year to work a basic job, which comes out to $0.77 trillion total. That is less than half of the direct cost of basic income! But let's see how it all adds up at the end. For instance, there will also be <b>disabled adults</b> who can't work but still need to be paid, which brings the direct cost up to around $1 trillion.</p>
-
-      <p>There will also be some <b>administrative overhead</b> involved in this program, much more than would be required for basic income. Let's say about $5k per basic worker, with a good amount of randomness included to account for uncertainty.</p>
-
-      <p>Then we get to the real crux of the issue: <b>what productive work would actually be accomplished by a basic job program?</b> Can we expect the federal government to profitably run an absolutely massive centrally-planned jobs program involving primarily those workers who can't find work in the private sector? I doubt it, but it's possible. So let's let this factor vary between positive and negative.</p>
+      <a href="docs/basic-income-basic-job.html">Click here.</a>
 
       <h2>Results</h2>
-
-      <p>One more time, <a href="https://github.com/dumbmatter/basic-income-basic-job">here is a link to the code</a> so you can easily generate your own model based on your own assumptions.</p>
 
       <h3>Histograms of total costs, 1000 simulations</h3>
 

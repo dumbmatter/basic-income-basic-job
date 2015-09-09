@@ -35,7 +35,8 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-2">&#182;</a>
               </div>
-              
+              <p>Data and math can’t always separate truth from fiction. But even in the face of uncertainty, <a href="http://slatestarcodex.com/2015/08/12/stop-adding-zeroes/">they can often separate plausible from ridiculous</a>. For example, if you say we should eliminate the income tax and pay for it by cutting defense spending by 50%, I can collect the data, add up the numbers, and ask you what you’re going to do about the other $1 trillion in lost revenue.</p></p>
+
             </div>
             
         </li>
@@ -47,8 +48,7 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-3">&#182;</a>
               </div>
-              <h2 id="constants">Constants</h2>
-<hr>
+              <p>Basic income is a system where the government directly gives money to all its citizens, rather than somewhat indirectly through complicated welfare programs. The idea is that removing the overhead and inefficiencies inherent in welfare programs and putting more money in the pocket of the poor could be very beneficial. Beyond that, there are many questions. Should the amount of money phase out for wealthy citizens? Which entitlements and regulations should it replace? And most importantly, how much will it cost and what will the benefits be?</p>
 
             </div>
             
@@ -61,7 +61,8 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-4">&#182;</a>
               </div>
-              
+              <p>Here, a basic income model is compared against a “basic job” model where the government guarantees employment for all non-disabled adults.</p>
+
             </div>
             
         </li>
@@ -73,11 +74,9 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-5">&#182;</a>
               </div>
-              <p>From 2010 census</p>
+              <p>I am going to work through the models, explaining all of the parameters and components as I go. </p>
 
             </div>
-            
-            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">var</span> numAdults = <span class="hljs-number">227e6</span>;</pre></div></div>
             
         </li>
         
@@ -88,11 +87,10 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-6">&#182;</a>
               </div>
-              <p>Minimum wage, 40 hours/week, 50 weeks/year</p>
+              <h2 id="constants">Constants</h2>
+<hr>
 
             </div>
-            
-            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">var</span> basicIncome = <span class="hljs-number">7.25</span> * <span class="hljs-number">40</span> * <span class="hljs-number">50</span>;</pre></div></div>
             
         </li>
         
@@ -103,11 +101,11 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-7">&#182;</a>
               </div>
-              <p>Also from 2010</p>
+              <p>Our goal is to make sure everyone gets at least the minimum wage ($7.25/hr for 40 hours/week and 50 weeks/year, or $14,500/year) even without working.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">var</span> laborForce = <span class="hljs-number">154e6</span>;</pre></div></div>
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">var</span> basicIncome = <span class="hljs-number">7.25</span> * <span class="hljs-number">40</span> * <span class="hljs-number">50</span>;</pre></div></div>
             
         </li>
         
@@ -118,11 +116,13 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-8">&#182;</a>
               </div>
-              <p>Also from 2010</p>
+              <p>In the 2010 census, there were 227 million adults. Of those, 154 million were in the labor force and 21 million were disabled. </p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">var</span> disabledAdults = <span class="hljs-number">21e6</span>;</pre></div></div>
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">var</span> numAdults = <span class="hljs-number">227e6</span>;
+<span class="hljs-keyword">var</span> laborForce = <span class="hljs-number">154e6</span>;
+<span class="hljs-keyword">var</span> disabledAdults = <span class="hljs-number">21e6</span>;</pre></div></div>
             
         </li>
         
@@ -133,7 +133,7 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-9">&#182;</a>
               </div>
-              <p>Also from 2010, includes SS, Medicare, welfare, etc.</p>
+              <p>As mentioned above, part of the reason to implement basic income is to eliminate inefficient government welfare programs. Let’s start with a very optimistic estimate of how much this could save - say, <a href="http://www.usgovernmentspending.com/piechart_2010_US_total">2010 US government spending</a> minus spending for education, defense, protection, transportation, and interest. That’s $3.4 trillion.</p>
 
             </div>
             
@@ -148,8 +148,7 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-10">&#182;</a>
               </div>
-              <h2 id="basic-income-model">Basic income model</h2>
-<hr>
+              <p>I can hear you already! Maybe you don’t want to cut all the programs I just proposed to cut. Maybe you want to cut some things that I didn’t cut, such as defense spending. Here’s the beauty of this model: <a href="https://github.com/dumbmatter/basic-income-basic-job">it’s simple and it’s open source</a>. With a little bit of programming knowledge, you can change these assumptions and see how it adds up. For example, you could keep Medicaid by cutting defense spending by 50%. The important thing is to do the math.</p>
 
             </div>
             
@@ -162,7 +161,9 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-11">&#182;</a>
               </div>
-              
+              <h2 id="basic-income-model">Basic income model</h2>
+<hr>
+
             </div>
             
         </li>
@@ -174,11 +175,9 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-12">&#182;</a>
               </div>
-              <p>Each time this function is called, the model will be run once. Because there is randomness in the model, the output will vary. Later, this function will be run many times to assess the full range of possible outcomes.</p>
+              <p>Now, we’re going to enumerate all the costs and benefits associated with a basic income. Because there is uncertainty in calculating each of these factors, I will often going pick a relatively wide range of random values to represent a variety of possible outcomes and repeat my calculations many times. This is called the <a href="https://en.wikipedia.org/wiki/Monte_Carlo_method">Monte Carlo method</a> and it’s a good way to understand uncertainty in an estimate involving randomness.</p>
 
             </div>
-            
-            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">basicIncomeCostBenefit</span>(<span class="hljs-params"></span>) </span>{</pre></div></div>
             
         </li>
         
@@ -189,11 +188,11 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-13">&#182;</a>
               </div>
-              <p>This object will store all the costs and benefits of the basic income as key/value pairs.</p>
+              <p>Each time this function is called, the model will be run once. Because there is randomness in the model, the output will vary. Later, this function will be run many times to assess the full range of possible outcomes.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">var</span> amounts = {};</pre></div></div>
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">basicIncomeCostBenefit</span>(<span class="hljs-params"></span>) </span>{</pre></div></div>
             
         </li>
         
@@ -204,11 +203,11 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-14">&#182;</a>
               </div>
-              <p>Assume we have some kind of phase out, like with a negative income tax</p>
+              <p>This object will store all the costs and benefits of the basic income as key/value pairs.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    amounts.directCosts = numAdults * basicIncome / <span class="hljs-number">2</span>;</pre></div></div>
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">var</span> amounts = {};</pre></div></div>
             
         </li>
         
@@ -219,12 +218,11 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-15">&#182;</a>
               </div>
-              <p>Small random administrative cost</p>
+              <p> First, <strong>how much does it cost to send that much money to so many people?</strong> Well, I’m going to cut some money right off the top. Although the simplest basic income system pays the same amount to everyone, is also possible to have a system like progressive income tax, where it gradually phases out. In fact, my fellow Rutgers alumnus Milton Friedman proposed to implement basic income through a negative income tax, which would naturally phase out as income increases. Let’s assume that reduces costs to roughly <code>1/2 * numAdults * basicIncome</code> or $1.65 trillion. That’s a lot of money, but we’ll see how it all adds up at the end.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">var</span> administrativeCostPerPerson = gaussRand(<span class="hljs-number">250</span>, <span class="hljs-number">75</span>);
-    amounts.administrativeCosts = numAdults * administrativeCostPerPerson;</pre></div></div>
+            <div class="content"><div class='highlight'><pre>    amounts.directCosts = <span class="hljs-number">1</span>/<span class="hljs-number">2</span> * numAdults * basicIncome;</pre></div></div>
             
         </li>
         
@@ -235,12 +233,12 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-16">&#182;</a>
               </div>
-              <p>Will basic income increase the labor force or decrease it? Not sure</p>
+              <p>There is also some <strong>administrative overhead</strong>, but due to the simplicity of determining eligibility and payouts, this will be small, let’s say maybe $250 per adult.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">var</span> nonWorkerMultiplier = uniformRand(-<span class="hljs-number">0.10</span>, <span class="hljs-number">0.15</span>);
-    <span class="hljs-keyword">var</span> nonWorkers = (numAdults - laborForce - disabledAdults) * (<span class="hljs-number">1</span> + nonWorkerMultiplier);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">var</span> administrativeCostPerPerson = gaussRand(<span class="hljs-number">250</span>, <span class="hljs-number">75</span>);
+    amounts.administrativeCosts = numAdults * administrativeCostPerPerson;</pre></div></div>
             
         </li>
         
@@ -251,13 +249,13 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-17">&#182;</a>
               </div>
-              <p>How will basic income change the productivity of current workers?</p>
+              <p>Then, <strong>what happens to the labor force?</strong> Would people who were previously unable to work due to ill-concieved government regulation like <a href="https://www.illinoispolicy.org/reports/modeling-potential-income-and-welfare-assistance-benefits-in-illinois/">welfare cliffs</a> start working? <a href="http://apps.npr.org/unfit-for-work/">The number of Americans on disability has been rising too, at least partially due to people who want to work but make more money on disability.</a> Some of them would start working again if they recieved an unconditional basic income. Alternatively, some workers may decide that their basic income revenue is enough for them and quit their jobs.</p>
+<p>I’m not really sure what the net effect would be, so let’s include some uncertainty here. In some simulations, basic income will increase the labor force. In others, it will decrease. Again… want to fiddle with my numbers? <a href="https://github.com/dumbmatter/basic-income-basic-job">Try your own!</a></p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">var</span> avgHourlyWage = <span class="hljs-number">25</span>;
-    <span class="hljs-keyword">var</span> productivityMultiplier = uniformRand(-<span class="hljs-number">0.1</span>, <span class="hljs-number">0.2</span>);
-    amounts.productivity = -laborForce * (<span class="hljs-number">40</span> * <span class="hljs-number">52</span> * avgHourlyWage) * productivityMultiplier;</pre></div></div>
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">var</span> nonWorkerMultiplier = uniformRand(-<span class="hljs-number">0.10</span>, <span class="hljs-number">0.15</span>);
+    <span class="hljs-keyword">var</span> nonWorkers = (numAdults - laborForce - disabledAdults) * (<span class="hljs-number">1</span> + nonWorkerMultiplier);</pre></div></div>
             
         </li>
         
@@ -268,7 +266,25 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-18">&#182;</a>
               </div>
-              <p>Basic income will allow some small number of creative geniuses to maximize their talents</p>
+              <p>With a basic income, <strong>many people would be free to pursue new career paths</strong> or start small businesses (or bring existing careers and businesses out from under the table). Additionally, there could be an economic stimulus due to more poor people having money to spend, similar to <a href="http://money.cnn.com/2008/01/29/news/economy/stimulus_analysis/">what has been observed for food stamps</a>.</p>
+<p>How big is this effect? That’s really difficult to estimate, so again let’s let this component vary randomly between positive and negative.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">var</span> avgHourlyWage = <span class="hljs-number">25</span>;
+    <span class="hljs-keyword">var</span> productivityMultiplier = uniformRand(-<span class="hljs-number">0.1</span>, <span class="hljs-number">0.2</span>);
+    amounts.productivity = -laborForce * (<span class="hljs-number">40</span> * <span class="hljs-number">52</span> * avgHourlyWage) * productivityMultiplier;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-19">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-19">&#182;</a>
+              </div>
+              <p>And just for fun, let’s add the <strong>JK Rowling effect</strong>. JK Rowling is of course the author of the Harry Potter novels. She famously wrote the first novel while on welfare. Basic income could possibly allow even more people to have this luxury.</p>
 
             </div>
             
@@ -280,27 +296,15 @@
         </li>
         
         
-        <li id="section-19">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-19">&#182;</a>
-              </div>
-              <h2 id="basic-job-model">Basic job model</h2>
-<hr>
-
-            </div>
-            
-        </li>
-        
-        
         <li id="section-20">
             <div class="annotation">
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-20">&#182;</a>
               </div>
-              
+              <h2 id="basic-job-model">Basic job model</h2>
+<hr>
+
             </div>
             
         </li>
@@ -312,12 +316,9 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-21">&#182;</a>
               </div>
-              <p>Like the basic income model, this function will run the model once each time it is called. The output of this function is the same format as <code>basicIncomeCostBenefit</code>, so the results can be easily compared.</p>
+              <p>A reasonable comparison for a basic income is, what if the government just gave every unemployed person an minimum wage job? That would also have a high cost, but some benefits too, right? That’s what was proposed in <a href="https://www.chrisstucchio.com/blog/2013/basic_income_vs_basic_job.html">the article that inspired this one</a>, but let’s see how likely that is.</p>
 
             </div>
-            
-            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">basicJobCostBenefit</span>(<span class="hljs-params"></span>) </span>{
-    <span class="hljs-keyword">var</span> amounts = {};</pre></div></div>
             
         </li>
         
@@ -328,12 +329,12 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-22">&#182;</a>
               </div>
-              <p>Will basic job increase the labor force or decrease it? Not sure</p>
+              <p>Like the basic income model, this function will run the model once each time it is called. The output of this function is the same format as <code>basicIncomeCostBenefit</code>, so the results can be easily compared.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">var</span> nonWorkerMultiplier = uniformRand(-<span class="hljs-number">0.1</span>, <span class="hljs-number">0.15</span>);
-    <span class="hljs-keyword">var</span> numBasicWorkers = (numAdults - disabledAdults - laborForce) * (<span class="hljs-number">1</span> + nonWorkerMultiplier);</pre></div></div>
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">basicJobCostBenefit</span>(<span class="hljs-params"></span>) </span>{
+    <span class="hljs-keyword">var</span> amounts = {};</pre></div></div>
             
         </li>
         
@@ -344,11 +345,12 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-23">&#182;</a>
               </div>
-              <p>Overall direct costs</p>
+              <p>Again, there is some uncertainty about the <strong>effects on the labor force</strong>. Maybe some people will desperately take other jobs to avoid a basic job. Maybe others will see the basic job as favorable to their current job. Let’s treat this the same as in the basic income scenario, allowing it to vary between positive and negative.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    amounts.directCosts = numBasicWorkers * basicIncome;</pre></div></div>
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">var</span> nonWorkerMultiplier = uniformRand(-<span class="hljs-number">0.1</span>, <span class="hljs-number">0.15</span>);
+    <span class="hljs-keyword">var</span> numBasicWorkers = (numAdults - disabledAdults - laborForce) * (<span class="hljs-number">1</span> + nonWorkerMultiplier);</pre></div></div>
             
         </li>
         
@@ -359,11 +361,12 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-24">&#182;</a>
               </div>
-              <p>Some cost for disabled people who can’t work</p>
+              <p>There is a large overall cost, of course. You have to <strong>pay all non-disabled non-working adults</strong> $14.5k/year to work a basic job, which comes out to $0.77 trillion total. That is less than half of the direct cost of basic income! But let’s see how it all adds up at the end. For instance, there will also be <strong>disabled adults</strong> who can’t work but still need to be paid, which brings the direct cost up to around $1 trillion.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">var</span> administrativeCostPerDisabledPerson = gaussRand(<span class="hljs-number">500</span>, <span class="hljs-number">150</span>);
+            <div class="content"><div class='highlight'><pre>    amounts.directCosts = numBasicWorkers * basicIncome;
+    <span class="hljs-keyword">var</span> administrativeCostPerDisabledPerson = gaussRand(<span class="hljs-number">500</span>, <span class="hljs-number">150</span>);
     amounts.disabled = disabledAdults * (basicIncome + administrativeCostPerDisabledPerson);</pre></div></div>
             
         </li>
@@ -375,7 +378,7 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-25">&#182;</a>
               </div>
-              <p>Some cost to run the program</p>
+              <p>There will also be some <strong>administrative overhead</strong> involved in this program, much more than would be required for basic income. Let’s say about $5k per basic worker, with a good amount of randomness included to account for uncertainty.</p>
 
             </div>
             
@@ -391,7 +394,7 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-26">&#182;</a>
               </div>
-              <p>Can productive work actually be done in this scheme?</p>
+              <p>Then we get to the real crux of the issue: <strong>what productive work would actually be accomplished by a basic job program?</strong> Can we expect the federal government to profitably run an absolutely massive centrally-planned jobs program involving primarily those workers who can’t find work in the private sector? I doubt it, but it’s possible. So let’s let this factor vary between positive and negative.</p>
 
             </div>
             
@@ -410,7 +413,7 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-27">&#182;</a>
               </div>
-              <h2 id="run-models-and-aggregate-results">Run models and aggregate results</h2>
+              <h2 id="results">Results</h2>
 <hr>
 
             </div>
@@ -424,7 +427,8 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-28">&#182;</a>
               </div>
-              
+              <p>The model is complete! Continue reading below to see how it is run and how results are displayed. Or, <a href="../index.html">jump right to the results.</a></p>
+
             </div>
             
         </li>
@@ -436,6 +440,33 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-29">&#182;</a>
               </div>
+              <p>And one more time, <a href="https://github.com/dumbmatter/basic-income-basic-job">here is a link to the code</a> so you can easily generate your own model based on your own assumptions.</p>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-30">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-30">&#182;</a>
+              </div>
+              <h2 id="run-models-and-aggregate-results">Run models and aggregate results</h2>
+<hr>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-31">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-31">&#182;</a>
+              </div>
               <p>Arrays containing objects, each one the output of <code>basicIncomeCostBenefit</code> or <code>basicJobCostBenefit</code> which is an object containing all the cost/benefit components</p>
 
             </div>
@@ -446,11 +477,11 @@
         </li>
         
         
-        <li id="section-30">
+        <li id="section-32">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-30">&#182;</a>
+                <a class="pilcrow" href="#section-32">&#182;</a>
               </div>
               <p>Arrays containing the total cost/benefit from each run, which is just one number per run</p>
 
@@ -462,11 +493,11 @@
         </li>
         
         
-        <li id="section-31">
+        <li id="section-33">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-31">&#182;</a>
+                <a class="pilcrow" href="#section-33">&#182;</a>
               </div>
               <p>Objects containing the average cost/benefit component values across all runs</p>
 
@@ -480,11 +511,11 @@
         </li>
         
         
-        <li id="section-32">
+        <li id="section-34">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-32">&#182;</a>
+                <a class="pilcrow" href="#section-34">&#182;</a>
               </div>
               <p>Number of simulations to run at once</p>
 
@@ -495,11 +526,11 @@
         </li>
         
         
-        <li id="section-33">
+        <li id="section-35">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-33">&#182;</a>
+                <a class="pilcrow" href="#section-35">&#182;</a>
               </div>
               <p>Run the modesl N times and save the results</p>
 
@@ -520,11 +551,11 @@
         </li>
         
         
-        <li id="section-34">
+        <li id="section-36">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-34">&#182;</a>
+                <a class="pilcrow" href="#section-36">&#182;</a>
               </div>
               <p>Precompute the average values from all N simulations</p>
 
@@ -547,11 +578,11 @@
         </li>
         
         
-        <li id="section-35">
+        <li id="section-37">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-35">&#182;</a>
+                <a class="pilcrow" href="#section-37">&#182;</a>
               </div>
               <p>This will generate and display charts based on the generated results - see the next section for details</p>
 
@@ -563,11 +594,11 @@
         </li>
         
         
-        <li id="section-36">
+        <li id="section-38">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-36">&#182;</a>
+                <a class="pilcrow" href="#section-38">&#182;</a>
               </div>
               <p>Run the simulations on page load</p>
 
@@ -578,11 +609,11 @@
         </li>
         
         
-        <li id="section-37">
+        <li id="section-39">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-37">&#182;</a>
+                <a class="pilcrow" href="#section-39">&#182;</a>
               </div>
               <h2 id="display-results">Display results</h2>
 <hr>
@@ -592,23 +623,11 @@
         </li>
         
         
-        <li id="section-38">
+        <li id="section-40">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-38">&#182;</a>
-              </div>
-              
-            </div>
-            
-        </li>
-        
-        
-        <li id="section-39">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-39">&#182;</a>
+                <a class="pilcrow" href="#section-40">&#182;</a>
               </div>
               <p>Generate and display all charts</p>
 
@@ -625,11 +644,11 @@
         </li>
         
         
-        <li id="section-40">
+        <li id="section-41">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-40">&#182;</a>
+                <a class="pilcrow" href="#section-41">&#182;</a>
               </div>
               <p>The histograms need to be re-rendered when the size of the window changes, otherwise they won’t fit in the window correctly</p>
 
@@ -640,11 +659,11 @@
         </li>
         
         
-        <li id="section-41">
+        <li id="section-42">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-41">&#182;</a>
+                <a class="pilcrow" href="#section-42">&#182;</a>
               </div>
               <p>Plot one of the histograms, showing the distribution of possible costs</p>
 
@@ -665,11 +684,11 @@
         </li>
         
         
-        <li id="section-42">
+        <li id="section-43">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-42">&#182;</a>
+                <a class="pilcrow" href="#section-43">&#182;</a>
               </div>
               <p>Generate a histogram with 10 evenly-spaced bins from input values</p>
 
@@ -717,11 +736,11 @@
         </li>
         
         
-        <li id="section-43">
+        <li id="section-44">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-43">&#182;</a>
+                <a class="pilcrow" href="#section-44">&#182;</a>
               </div>
               <p>Plot one of the bar graphs, showing the average contribution of different components to the total cost</p>
 
@@ -804,27 +823,15 @@
         </li>
         
         
-        <li id="section-44">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-44">&#182;</a>
-              </div>
-              <h2 id="utility-functions">Utility functions</h2>
-<hr>
-
-            </div>
-            
-        </li>
-        
-        
         <li id="section-45">
             <div class="annotation">
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-45">&#182;</a>
               </div>
-              
+              <h2 id="utility-functions">Utility functions</h2>
+<hr>
+
             </div>
             
         </li>
@@ -835,6 +842,18 @@
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-46">&#182;</a>
+              </div>
+              
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-47">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-47">&#182;</a>
               </div>
               <p>Because JavaScript’s ecosystem is a wasteland, I wrote some helper functions for generating the random numbers used in the models</p>
 
